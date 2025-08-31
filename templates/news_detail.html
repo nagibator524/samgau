@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - Предвыборная кампания{% endblock %}
+
+{% block content %}
+<!-- News Detail Hero Section -->
+<section class="news-detail-hero py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{ url_for('index') }}" class="text-decoration-none">
+                                <i class="fas fa-home me-1"></i>Главная
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ url_for('news') }}" class="text-decoration-none">Новости</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ article.title[:30] }}...</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Article Content Section -->
+<section class="article-content-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <article class="news-article">
+                    <!-- Article Header -->
+                    <header class="article-header mb-4">
+                        <div class="article-meta mb-3">
+                            <span class="article-date">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ article.created_at.strftime('%d.%m.%Y') }}
+                            </span>
+                            <span class="article-time ms-3">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ article.created_at.strftime('%H:%M') }}
+                            </span>
+                        </div>
+                        <h1 class="article-title">{{ article.title }}</h1>
+                    </header>
+
+                    <!-- Article Image -->
+                    {% if article.image_url %}
+                    <div class="article-image mb-4">
+                        <img src="{{ article.image_url }}" alt="{{ article.title }}" class="img-fluid rounded">
+                    </div>
+                    {% endif %}
+
+                    <!-- Article Content -->
+                    <div class="article-body">
+                        <div class="article-text">
+                            {{ article.content|safe }}
+                        </div>
+                    </div>
+
+                    <!-- Article Footer -->
+                    <footer class="article-footer mt-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <div class="article-actions">
+                                    <button class="btn btn-outline-primary btn-sm me-2" onclick="shareArticle('{{ article.title }}', '{{ article.content[:100] }}...')">
+                                        <i class="fas fa-share-alt me-1"></i>
+                                        Поделиться
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm" onclick="bookmarkArticle({{ article.id }})">
+                                        <i class="fas fa-bookmark me-1"></i>
+                                        В закладки
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <a href="{{ url_for('news') }}" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left me-2"></i>
+                                    К списку новостей
+                                </a>
+                            </div>
+                        </div>
+                    </footer>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related News Section -->
+<section class="related-news-section py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="section-title mb-4">
+                    <span class="text-dark">Другие</span>
+                    <span class="text-gold">новости</span>
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            {% set other_news = news[:3] if news else [] %}
+            {% for other_article in other_news %}
+                {% if other_article.id != article.id %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="related-news-card">
+                        {% if other_article.image_url %}
+                        <div class="related-news-image">
+                            <img src="{{ other_article.image_url }}" alt="{{ other_article.title }}" class="img-fluid">
+                        </div>
+                        {% endif %}
+                        <div class="related-news-content">
+                            <h5 class="related-news-title">
+                                <a href="{{ url_for('news_detail', news_id=other_article.id) }}" class="text-decoration-none">
+                                    {{ other_article.title }}
+                                </a>
+                            </h5>
+                            <p class="related-news-excerpt">
+                                {{ other_article.content[:100] }}{% if other_article.content|length > 100 %}...{% endif %}
+                            </p>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ other_article.created_at.strftime('%d.%m.%Y') }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* News Detail Hero Section */
+.news-detail-hero {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+}
+
+.breadcrumb-item a {
+    color: var(--primary-gold);
+}
+
+.breadcrumb-item.active {
+    color: #666;
+}
+
+/* Article Content */
+.news-article {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.article-meta {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.article-title {
+    color: var(--dark-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.article-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.article-text {
+    color: #333;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.article-text h1, .article-text h2, .article-text h3, .article-text h4, .article-text h5, .article-text h6 {
+    color: var(--dark-color);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.article-text p {
+    margin-bottom: 1.5rem;
+}
+
+.article-text ul, .article-text ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.article-text li {
+    margin-bottom: 0.5rem;
+}
+
+.article-text blockquote {
+    border-left: 4px solid var(--primary-gold);
+    padding-left: 1rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #666;
+}
+
+.article-footer {
+    border-top: 1px solid #eee;
+    padding-top: 2rem;
+}
+
+/* Related News Section */
+.related-news-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.related-news-card:hover {
+    transform: translateY(-5px);
+}
+
+.related-news-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.related-news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.related-news-content {
+    padding: 1.5rem;
+}
+
+.related-news-title {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.related-news-title a {
+    color: inherit;
+}
+
+.related-news-title a:hover {
+    color: var(--primary-gold);
+}
+
+.related-news-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .article-title {
+        font-size: 2rem;
+    }
+    
+    .news-article {
+        padding: 1.5rem;
+    }
+    
+    .article-footer .row {
+        text-align: center;
+    }
+    
+    .article-footer .col-md-6:first-child {
+        margin-bottom: 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Share article functionality
+function shareArticle(title, content) {
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: content,
+            url: window.location.href
+        });
+    } else {
+        // Fallback for browsers that don't support Web Share API
+        const text = `${title}\n\n${content}\n\n${window.location.href}`;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Ссылка скопирована в буфер обмена!');
+        });
+    }
+}
+
+// Bookmark article functionality
+function bookmarkArticle(articleId) {
+    // This would typically save to localStorage or send to server
+    const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+    if (!bookmarks.includes(articleId)) {
+        bookmarks.push(articleId);
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        alert('Новость добавлена в закладки!');
+    } else {
+        const index = bookmarks.indexOf(articleId);
+        bookmarks.splice(index, 1);
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        alert('Новость удалена из закладок!');
+    }
+}
+</script>
+{% endblock %}

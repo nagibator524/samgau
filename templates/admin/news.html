@@ -1,0 +1,91 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Управление новостями{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+        <i class="fas fa-newspaper me-2" style="color: var(--primary-gold);"></i>
+        Управление новостями
+    </h2>
+    <a href="{{ url_for('create_news') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>
+        Добавить новость
+    </a>
+</div>
+
+{% if news %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-list me-2"></i>
+            Список новостей ({{ news|length }})
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Заголовок</th>
+                        <th>Дата создания</th>
+                        <th>Дата обновления</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in news %}
+                    <tr>
+                        <td>{{ article.id }}</td>
+                        <td>
+                            <strong>{{ article.title }}</strong>
+                            {% if article.image_url %}
+                            <br><small class="text-muted">
+                                <i class="fas fa-image me-1"></i>Есть изображение
+                            </small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <i class="fas fa-calendar me-1"></i>
+                            {{ article.created_at.strftime('%d.%m.%Y %H:%M') }}
+                        </td>
+                        <td>
+                            <i class="fas fa-edit me-1"></i>
+                            {{ article.updated_at.strftime('%d.%m.%Y %H:%M') }}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('edit_news', id=article.id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{{ url_for('delete_news', id=article.id) }}" 
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Вы уверены, что хотите удалить эту новость?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card">
+    <div class="card-body text-center py-5">
+        <i class="fas fa-newspaper mb-4" style="font-size: 4rem; color: var(--primary-gold);"></i>
+        <h4 class="mb-3">Новости пока не добавлены</h4>
+        <p class="text-muted mb-4">
+            Добавьте первую новость, чтобы начать наполнять сайт контентом.
+        </p>
+        <a href="{{ url_for('create_news') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Добавить первую новость
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,569 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Предвыборная кампания{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="text-white">Будущее</span>
+                        <span class="text-gold">нашей школы</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Мы создаем инновационную образовательную среду, где каждый ученик может раскрыть свой потенциал и достичь успеха
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('about') }}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Узнать больше
+                        </a>
+                        <a href="{{ url_for('team') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-users me-2"></i>
+                            Наша команда
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <div class="floating-card">
+                        <div class="card bg-white shadow-lg">
+                            <div class="card-body text-center p-4">
+                                <i class="fas fa-graduation-cap mb-3" style="font-size: 3rem; color: var(--primary-gold);"></i>
+                                <h4 class="text-dark mb-2">Голосуйте за будущее</h4>
+                                <p class="text-muted mb-3">Поддержите нашу команду в предвыборной кампании</p>
+                                <div class="progress mb-3" style="height: 8px;">
+                                    <div class="progress-bar bg-gold" style="width: 75%"></div>
+                                </div>
+                                <small class="text-muted">75% поддержки</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <span class="text-dark">Наши</span>
+                    <span class="text-gold">приоритеты</span>
+                </h2>
+                <p class="section-subtitle">Основные направления нашей предвыборной программы</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h4>Цифровое образование</h4>
+                    <p>Внедрение современных технологий в образовательный процесс, улучшение компьютерных классов и онлайн-платформ</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Здоровье и спорт</h4>
+                    <p>Развитие спортивной инфраструктуры, организация дополнительных секций и мероприятий для здорового образа жизни</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4>Творчество и искусство</h4>
+                    <p>Поддержка творческих кружков, художественных студий и культурных мероприятий для развития талантов</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h4>Международные связи</h4>
+                    <p>Организация обменных программ, международных проектов и изучение иностранных языков</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>Экология</h4>
+                    <p>Создание экологических проектов, озеленение территории школы и экологическое воспитание</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h4>Социальная ответственность</h4>
+                    <p>Волонтерские программы, помощь нуждающимся и развитие социальных навыков у учащихся</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest News Section -->
+<section class="news-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <span class="text-dark">Последние</span>
+                    <span class="text-gold">новости</span>
+                </h2>
+                <p class="section-subtitle">Будьте в курсе событий нашей предвыборной кампании</p>
+            </div>
+        </div>
+        <div class="row">
+            {% if news %}
+                {% for article in news[:3] %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="news-card">
+                        {% if article.image_url %}
+                        <div class="news-image">
+                            <img src="{{ article.image_url }}" alt="{{ article.title }}" class="img-fluid">
+                        </div>
+                        {% endif %}
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="news-date">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ article.created_at.strftime('%d.%m.%Y') }}
+                                </span>
+                            </div>
+                            <h5 class="news-title">{{ article.title }}</h5>
+                            <p class="news-excerpt">{{ article.content[:150] }}{% if article.content|length > 150 %}...{% endif %}</p>
+                            <a href="{{ url_for('news') }}" class="btn btn-outline-primary btn-sm">
+                                Читать далее
+                                <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <div class="empty-state">
+                        <i class="fas fa-newspaper mb-3" style="font-size: 4rem; color: var(--primary-gold);"></i>
+                        <h4>Новости скоро появятся</h4>
+                        <p class="text-muted">Мы готовим интересные новости о нашей кампании</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        {% if news %}
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('news') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-newspaper me-2"></i>
+                    Все новости
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Team Preview Section -->
+<section class="team-preview-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <span class="text-dark">Наша</span>
+                    <span class="text-gold">команда</span>
+                </h2>
+                <p class="section-subtitle">Знакомьтесь с лидерами нашей предвыборной кампании</p>
+            </div>
+        </div>
+        <div class="row">
+            {% if team %}
+                {% for member in team[:4] %}
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-image">
+                            {% if member.image_url %}
+                            <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img-fluid">
+                            {% else %}
+                            <div class="team-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="team-content">
+                            <h5 class="team-name">{{ member.name }}</h5>
+                            <p class="team-position">{{ member.position }}</p>
+                            {% if member.description %}
+                            <p class="team-description">{{ member.description[:100] }}{% if member.description|length > 100 %}...{% endif %}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <div class="empty-state">
+                        <i class="fas fa-users mb-3" style="font-size: 4rem; color: var(--primary-gold);"></i>
+                        <h4>Команда формируется</h4>
+                        <p class="text-muted">Скоро мы представим нашу команду</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        {% if team %}
+        <div class="row">
+            <div class="col-12 text-center">
+                <a href="{{ url_for('team') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-users me-2"></i>
+                    Вся команда
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section py-5 bg-gold text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h3 class="mb-3">Готовы поддержать нашу кампанию?</h3>
+                <p class="mb-0">Присоединяйтесь к нам в создании лучшего будущего для нашей школы</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{{ url_for('about') }}" class="btn btn-white btn-lg">
+                    <i class="fas fa-handshake me-2"></i>
+                    Поддержать
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section py-5 bg-dark text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-users mb-3" style="font-size: 3rem; color: var(--primary-gold);"></i>
+                    <h3 class="stat-number">{{ team|length }}</h3>
+                    <p class="stat-label">Членов команды</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-calendar-check mb-3" style="font-size: 3rem; color: var(--primary-gold);"></i>
+                    <h3 class="stat-number">{{ news|length }}</h3>
+                    <p class="stat-label">Новостей</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-star mb-3" style="font-size: 3rem; color: var(--primary-gold);"></i>
+                    <h3 class="stat-number">100%</h3>
+                    <p class="stat-label">Готовность</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <i class="fas fa-trophy mb-3" style="font-size: 3rem; color: var(--primary-gold);"></i>
+                    <h3 class="stat-number">∞</h3>
+                    <p class="stat-label">Возможностей</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    margin-top: 2rem;
+}
+
+.floating-card {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Features Section */
+.feature-card {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-gold), #ffd700);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.feature-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.feature-card h4 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* News Section */
+.news-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+}
+
+.news-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 1.5rem;
+}
+
+.news-meta {
+    margin-bottom: 1rem;
+}
+
+.news-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.news-title {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.news-excerpt {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Team Section */
+.team-card {
+    text-align: center;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-image {
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+}
+
+.team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-placeholder i {
+    font-size: 4rem;
+    color: #adb5bd;
+}
+
+.team-content {
+    padding: 1.5rem;
+}
+
+.team-name {
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.team-position {
+    color: var(--primary-gold);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.team-description {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-gold), #ffd700);
+}
+
+.btn-white {
+    background: white;
+    color: var(--dark-color);
+    border: 2px solid white;
+}
+
+.btn-white:hover {
+    background: transparent;
+    color: white;
+}
+
+/* Stats Section */
+.stat-item {
+    padding: 2rem 1rem;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+}
+
+/* Empty State */
+.empty-state {
+    padding: 3rem 1rem;
+}
+
+.empty-state h4 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-buttons .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .floating-card {
+        margin-top: 2rem;
+    }
+}
+</style>
+{% endblock %}
