@@ -1,0 +1,150 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Редактировать новость{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+        <i class="fas fa-edit me-2" style="color: var(--primary-gold);"></i>
+        Редактировать новость
+    </h2>
+    <a href="{{ url_for('admin_news') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>
+        Назад к списку
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-edit me-2"></i>
+            Редактирование новости #{{ news.id }}
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">
+                            <i class="fas fa-heading me-2"></i>Заголовок новости *
+                        </label>
+                        <input type="text" class="form-control" id="title" name="title" required 
+                               value="{{ news.title }}" placeholder="Введите заголовок новости">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="content" class="form-label">
+                            <i class="fas fa-align-left me-2"></i>Содержание новости *
+                        </label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required
+                                  placeholder="Введите содержание новости...">{{ news.content }}</textarea>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label">
+                            <i class="fas fa-image me-2"></i>URL изображения
+                        </label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" 
+                               value="{{ news.image_url or '' }}" placeholder="https://example.com/image.jpg">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Оставьте пустым, если изображение не требуется
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Информация о новости
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Создана: {{ news.created_at.strftime('%d.%m.%Y %H:%M') }}
+                                </small>
+                            </div>
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-edit me-1"></i>
+                                    Обновлена: {{ news.updated_at.strftime('%d.%m.%Y %H:%M') }}
+                                </small>
+                            </div>
+                            <div>
+                                <small class="text-muted">
+                                    <i class="fas fa-hashtag me-1"></i>
+                                    ID: {{ news.id }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                Советы
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Проверьте орфографию
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Убедитесь в актуальности
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Добавьте изображение
+                                </li>
+                                <li>
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Сохраните изменения
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{{ url_for('admin_news') }}" class="btn btn-secondary">
+                    <i class="fas fa-times me-2"></i>
+                    Отмена
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>
+                    Сохранить изменения
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Автоматическое увеличение высоты текстового поля
+document.getElementById('content').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+});
+
+// Установка начальной высоты
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('content');
+    textarea.style.height = 'auto';
+    textarea.style.height = (textarea.scrollHeight) + 'px';
+});
+</script>
+{% endblock %}

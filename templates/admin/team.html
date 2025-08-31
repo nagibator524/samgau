@@ -1,0 +1,101 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Управление командой{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+        <i class="fas fa-users me-2" style="color: var(--primary-gold);"></i>
+        Управление командой
+    </h2>
+    <a href="{{ url_for('create_team_member') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>
+        Добавить члена команды
+    </a>
+</div>
+
+{% if team %}
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-list me-2"></i>
+            Список команды ({{ team|length }})
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Фото</th>
+                        <th>Имя</th>
+                        <th>Позиция</th>
+                        <th>Описание</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in team %}
+                    <tr>
+                        <td>{{ member.id }}</td>
+                        <td>
+                            {% if member.image_url %}
+                            <img src="{{ member.image_url }}" alt="{{ member.name }}" 
+                                 style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                            {% else %}
+                            <div style="width: 50px; height: 50px; background: var(--light-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user" style="color: var(--primary-gold);"></i>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <strong>{{ member.name }}</strong>
+                        </td>
+                        <td>
+                            <span class="badge bg-info">{{ member.position }}</span>
+                        </td>
+                        <td>
+                            {% if member.description %}
+                            <small class="text-muted">
+                                {{ member.description[:50] }}{% if member.description|length > 50 %}...{% endif %}
+                            </small>
+                            {% else %}
+                            <small class="text-muted">Описание не добавлено</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('edit_team_member', id=member.id) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{{ url_for('delete_team_member', id=member.id) }}" 
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Вы уверены, что хотите удалить этого члена команды?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card">
+    <div class="card-body text-center py-5">
+        <i class="fas fa-users mb-4" style="font-size: 4rem; color: var(--primary-gold);"></i>
+        <h4 class="mb-3">Команда пока не добавлена</h4>
+        <p class="text-muted mb-4">
+            Добавьте членов команды, чтобы показать, кто работает над предвыборной кампанией.
+        </p>
+        <a href="{{ url_for('create_team_member') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>
+            Добавить первого члена команды
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

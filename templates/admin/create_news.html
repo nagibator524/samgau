@@ -1,0 +1,122 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Создать новость{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">
+        <i class="fas fa-plus me-2" style="color: var(--primary-gold);"></i>
+        Создать новость
+    </h2>
+    <a href="{{ url_for('admin_news') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>
+        Назад к списку
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-edit me-2"></i>
+            Форма создания новости
+        </h5>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">
+                            <i class="fas fa-heading me-2"></i>Заголовок новости *
+                        </label>
+                        <input type="text" class="form-control" id="title" name="title" required 
+                               placeholder="Введите заголовок новости">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="content" class="form-label">
+                            <i class="fas fa-align-left me-2"></i>Содержание новости *
+                        </label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required
+                                  placeholder="Введите содержание новости..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="image_url" class="form-label">
+                            <i class="fas fa-image me-2"></i>URL изображения
+                        </label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" 
+                               placeholder="https://example.com/image.jpg">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Оставьте пустым, если изображение не требуется
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                Советы
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Пишите интересные заголовки
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Используйте качественные изображения
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Делайте текст читаемым
+                                </li>
+                                <li>
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Регулярно обновляйте новости
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{{ url_for('admin_news') }}" class="btn btn-secondary">
+                    <i class="fas fa-times me-2"></i>
+                    Отмена
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>
+                    Создать новость
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Автоматическое увеличение высоты текстового поля
+document.getElementById('content').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+});
+
+// Предварительный просмотр заголовка
+document.getElementById('title').addEventListener('input', function() {
+    const preview = document.getElementById('title-preview');
+    if (preview) {
+        preview.textContent = this.value || 'Заголовок новости';
+    }
+});
+</script>
+{% endblock %}
